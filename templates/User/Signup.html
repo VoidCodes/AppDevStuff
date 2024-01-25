@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %} Home {% endblock %}
+{% block content %} 
+    <div class="container body-content">
+        <h2 class="p-2">Create User</h2>
+        <form class="needs-validation" action="/signup" method="post" novalidate >
+            <input name="__RequestVerificationToken" type="hidden" value="" />
+            
+            <div class="form-horizontal">
+                <hr />
+                <div class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="Name">User Name</label>
+                    <div class="col-md-10">
+                        <input class="form-control" id="Name" name="username" placeholder="Enter a username" type="text" value="" required/>
+                        <div class="text-danger"></div>
+                        <div class="invalid-feedback">
+                            Please enter a user name.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-md-2 control-label">Password</label>
+                    <div class="col-md-10">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                        <div class="invalid-feedback">
+                            Please provide a password.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword" class="col-md-2 control-label">Confirm Password</label>
+                    <div class="col-md-10">
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                        <div class="invalid-feedback">
+                            Please confirm your password.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="Email"> Email</label>
+                    <div class="col-md-10">
+                        <input class="form-control" id="Email" name="Email" placeholder="Please enter an email address" type="text" value="" required/>
+                        <div class="text-danger"></div>
+                        <div class="invalid-feedback">
+                            Please enter a valid email address.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber" class="col-md-2 control-label">Phone Number</label>
+                    <div class="col-md-10">
+                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" required>
+                        <div class="invalid-feedback">
+                            Please provide a valid phone number.
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <div class="alert alert-success" role="alert" style="display: none;">
+                            <h5></h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Bootstrap validation
+        (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+            }, false)
+        })
+
+        var email = document.getElementById('Email');
+        email.oninput = () => {
+          const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+          if(!re.test(email.value)){
+            email.setCustomValidity("Invalid field.");
+            email.classList.add('is-invalid');
+          } else {
+            email.classList.remove('is-invalid'); 
+            email.setCustomValidity("")
+          }
+        }
+        })()
+    </script>
+
+{% endblock %}

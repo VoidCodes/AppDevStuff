@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>Add New User</title>
+</head>
+<body>
+    <div class="container body-content">
+        <h2>Add New User</h2>
+        <form class="needs-validation" action="" method="post" novalidate>
+            <input name="__RequestVerificationToken" type="hidden" value="" />
+            
+            <div class="form-horizontal">
+                <hr />
+                <div class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="CollegeCode">UserID</label>
+                    <div class="col-md-10">
+                        <input class="form-control" id="CollegeCode" name="CollegeCode" type="number" value="" required/>
+                        <div class="text-danger"></div>
+                        <div class="invalid-feedback">
+                            Please enter a User Id.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="CollegeName">User Name</label>
+                    <div class="col-md-10">
+                        <input class="form-control" id="CollegeName" name="CollegeName" type="text" value="" required/>
+                        <div class="text-danger"></div>
+                        <div class="invalid-feedback">
+                            Please enter a user name.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="DeanFirstName">First Name</label>
+                    <div class="col-md-10">
+                        <input class="form-control" id="DeanFirstName" name="DeanFirstName" type="text" value="" required/>
+                        <div class="text-danger"></div>
+                        <div class="invalid-feedback">
+                            Please enter your first name.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="DeanLastName">Last Name</label>
+                    <div class="col-md-10">
+                        <input class="form-control" id="DeanLastName" name="DeanLastName" type="text" value="" required/>
+                        <div class="text-danger"></div>
+                        <div class="invalid-feedback">
+                            Please enter your last name.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="DeanEmail"> Email</label>
+                    <div class="col-md-10">
+                        <input class="form-control" id="DeanEmail" name="DeanEmail" type="text" value="" required/>
+                        <div class="text-danger"></div>
+                        <div class="invalid-feedback">
+                            Please enter a valid email address.
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <div class="alert alert-success" role="alert" style="display: none;">
+                            <h5></h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div>
+            <a href="adminDashboard.html">Back to List</a>
+        </div>
+    </div>
+
+    <script>
+        // Bootstrap validation
+        (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+            if (!form.checkValidity()) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+
+            form.classList.add('was-validated')
+            }, false)
+        })
+
+        var email = document.getElementById('DeanEmail');
+        email.oninput = () => {
+          const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; 
+          if(!re.test(email.value)){
+            email.setCustomValidity("Invalid field.");
+            email.classList.add('is-invalid');
+          } else {
+            email.classList.remove('is-invalid'); 
+            email.setCustomValidity("")
+          }
+        }
+        })()
+
+        // get values from form and add it to local storage
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const collegeCode = document.getElementById('CollegeCode').value;
+            const collegeName = document.getElementById('CollegeName').value;
+            const deanFirstName = document.getElementById('DeanFirstName').value;
+            const deanLastName = document.getElementById('DeanLastName').value;
+            const deanEmail = document.getElementById('DeanEmail').value;
+
+            // Store the new college data to local storage
+            const newCollege = {
+                "collegeCode": parseInt(collegeCode),
+                "collegeName": collegeName,
+                "deanFirstName": deanFirstName,
+                "deanLastName": deanLastName,
+                "deanEmail": deanEmail
+            };
+
+            // Check if the form has all the required fields
+            if (collegeCode === '' || collegeName === '' || deanFirstName === '' || deanLastName === '' || deanEmail === '') {
+                return;
+            }
+
+            // Check if the college code already exists in local storage
+            if (localStorage.getItem('colleges') !== null) {
+                // Retrieve the colleges array from local storage
+                const colleges = JSON.parse(localStorage.getItem('colleges'));
+                // Check if the college code already exists in the colleges array
+                const collegeCodeExists = colleges.some(college => college.collegeCode === newCollege.collegeCode);
+                if (collegeCodeExists) {
+                    // Display error message
+                    const alert = document.querySelector('.alert');
+                    alert.style.display = 'block';
+                    alert.innerHTML = 'College already exists!';
+                    // Change the alert color to red
+                    alert.classList.remove('alert-success');
+                    alert.classList.add('alert-danger');
+                    setTimeout(() => {
+                        alert.style.display = 'none';
+                    }, 3000);
+                    return;
+                }
+            }
+
+            // Check if the colleges array exists in local storage
+            if (localStorage.getItem('colleges') === null) {
+                // Create a new colleges array
+                const colleges = [];
+                // Add the new college data to the new colleges array
+                colleges.push(newCollege);
+                // Store the new colleges array to local storage
+                localStorage.setItem('colleges', JSON.stringify(colleges));
+                console.log(`New college added: ${JSON.stringify(newCollege)}`);
+                console.log(`New colleges array: ${JSON.stringify(colleges)}`);
+                return;
+            } else {
+                // Retrieve the colleges array from local storage
+                const colleges = JSON.parse(localStorage.getItem('colleges'));
+                // Add the new college data to the existing colleges array
+                colleges.push(newCollege);
+                // Store the new colleges array to local storage
+                localStorage.setItem('colleges', JSON.stringify(colleges));
+                console.log(`New college added: ${JSON.stringify(newCollege)}`);
+                console.log(`New colleges array: ${JSON.stringify(colleges)}`);
+            }
+
+            // Display success message
+            const alert = document.querySelector('.alert');
+            alert.style.display = 'block';
+            alert.innerHTML = 'User added successfully!';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

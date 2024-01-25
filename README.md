@@ -1,2 +1,0 @@
-# AppDevStuff
-Project
