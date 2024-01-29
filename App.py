@@ -18,23 +18,20 @@ with app.app_context():
     db.create_all()
 
 @app.route("/")
-def home():
+def index():
+    return render_template('User/Home.html')
+
+@app.route("/shop")
+def shop():
     try:
         allproducts = Product.query.all()
     except SQLAlchemyError as e:
         flash('Error: %s' % e, 'error')
         allproducts = []
-    return render_template('User/Home.html', products=allproducts)
+    return render_template('User/shop.html', products=allproducts)
 
-@app.route("/search", methods=['GET', 'POST'])
-def search():
-    if request.method == 'POST':
-        query = request.form['query']
-        products = Product.query.filter(Product.name.contains(query)).all()
-        return render_template('User/Home.html', products=products)
-    return render_template('User/Search.html')
 
-@app.route("/signup", methods=['GET', 'POST'])
+@app.route("/register", methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         """
@@ -59,7 +56,7 @@ def signup():
             flash('Error: %s' % e, 'error')
             return redirect(url_for('signup'))
         
-    return render_template('User/Signup.html')
+    return render_template('User/register.html')
 
 
 if __name__ == "__main__":
