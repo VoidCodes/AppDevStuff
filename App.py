@@ -29,7 +29,7 @@ def shop():
         flash('Error: %s' % e, 'error')
         allproducts = []
     return render_template('User/shop.html', products=allproducts)
-
+# test
 
 @app.route("/register", methods=['GET', 'POST'])
 def signup():
